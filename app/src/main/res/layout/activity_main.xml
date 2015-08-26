@@ -1,0 +1,68 @@
+<LinearLayout xmlns:hzx="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.pengpenghui.ui.MainActivity" >
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+    </android.support.v4.view.ViewPager>
+  <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/tab_bg"
+        android:orientation="horizontal" >
+
+        <com.example.myapplication.ChangeColorText
+            android:id="@+id/id_indicator_one"
+            android:padding="5dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            hzx:icon1="@drawable/pic_hk"
+            hzx:text="作业"
+            hzx:textSize="10sp"
+            hzx:color1="@color/blue" />
+        
+        <com.example.myapplication.ChangeColorText
+            android:id="@+id/id_indicator_two"
+            android:padding="5dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            hzx:icon1="@drawable/pic_class"
+            hzx:text="课表"
+            hzx:textSize="10sp"
+            hzx:color1="@color/blue" />
+
+        <com.example.myapplication.ChangeColorText
+            android:id="@+id/id_indicator_three"
+            android:padding="5dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            hzx:icon1="@drawable/pic_score"
+            hzx:text="成绩"
+            hzx:textSize="10sp"
+            hzx:color1="@color/blue" />
+
+      <com.example.myapplication.ChangeColorText
+          android:id="@+id/id_indicator_four"
+          android:padding="5dp"
+          android:layout_width="0dp"
+          android:layout_height="match_parent"
+          android:layout_weight="1"
+          hzx:icon1="@drawable/pic_down"
+          hzx:text="资源共享"
+          hzx:textSize="10sp"
+          hzx:color1="@color/blue" />
+        </LinearLayout>
+       
+  
+
+</LinearLayout>

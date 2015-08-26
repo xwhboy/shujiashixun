@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:paddingRight="20dp"
+    android:paddingLeft="20dp"
+    android:paddingTop="1dp"
+    android:paddingBottom="5dp"
+    >
+<RelativeLayout
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/line"
+    android:id="@+id/ll1"
+
+
+    >
+    <TextView
+        android:id="@+id/hk_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="标题"
+        android:layout_margin="10dp"
+        android:textColor="@color/black"
+        android:textSize="23sp"
+        />
+
+    <LinearLayout
+        android:id="@+id/ll3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/hk_data"
+        android:layout_margin="4dp"
+        >
+
+    <ImageView
+
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@drawable/per"
+        />
+    <TextView
+        android:id="@+id/hk_teacher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="老师名"
+        android:layout_marginLeft="6dp"
+        android:textSize="15sp"
+        android:textColor="@color/black"
+        android:singleLine="true"
+     />
+    </LinearLayout>
+    <TextView
+
+        android:id="@+id/hk_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="2015.04.02"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="3dp"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:layout_below="@+id/ll3"
+        />
+</RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/ll2"
+        android:background="@color/white"
+        android:layout_below="@+id/ll1"
+        >
+        <TextView
+            android:id="@+id/hk_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="陈文发大傻逼"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/black"
+            android:textSize="17sp"
+
+            />
+
+</LinearLayout>
+</RelativeLayout>

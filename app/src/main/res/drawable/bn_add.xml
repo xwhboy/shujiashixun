@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:Android="http://schemas.android.com/apk/res-auto">
+
+    <item android:drawable="@drawable/bnp" android:state_pressed="true"/>
+    <item android:drawable="@drawable/bnp" android:state_enabled="false"/>
+    <item android:drawable="@drawable/bns"/>   <!-- 这行，放在最后面就成功了-->
+
+
+</selector>
