@@ -23,6 +23,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener,
      * ViewPager 如其名所述，是负责翻页的一个 View。准确说是一个 ViewGroup，
      * 包含多个 View 页，在手指横向滑动屏幕时，其负责对 View 进行切换。
      * 为了生成这些 View 页，需要提供一个 PagerAdapter 来进行和数据绑定以及生成最终的 View 页。
+     嘎嘎
      */
     ViewPager mViewPager;
     /**
