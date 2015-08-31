@@ -73,6 +73,7 @@
                 android:layout_marginTop="20dp"
                 android:textSize="18dp"
                 android:text="上传作业"
+                android:id="@+id/sendmessage"
                 android:textColor="@color/white"
                 android:background="@drawable/bn_add"/>
 
