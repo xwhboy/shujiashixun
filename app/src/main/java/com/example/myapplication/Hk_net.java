@@ -2,34 +2,34 @@ package com.example.myapplication;
 import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Created by нд╨ф on 2015/8/12.
+ * Created by О©╫д╨О©╫ on 2015/8/12.
  */
 
 class Hk_net {
 
+
+
     private String getData="UNDO";
     public String  get_NetMessage(){
-
-          //getData=refresh(String id, String lastTime)
-
-          return getData;
+          String getdata0;
+          getdata0=Data.refresh("1201330614","2015-08-01 12:23:12");
+          Log.v("efsdfsfs",getdata0);
+          return getdata0;
     }
 
 
 
     public boolean send_hk_message(String id, String title, String content){
            boolean if_send=false;
-           //if_send=post(String id, String title, String content)
+           if_send=Data.post( id, title, content);
            return if_send;
     }
 
@@ -40,34 +40,34 @@ class Hk_net {
             Log.v("Error","Error");
         }
 
-
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("author", "author");
-        map.put("title", "title");
-        map.put("time", "time");
-        map.put("content", "content");
-        map.put("number", "number");
-
-
-        Map<String, String> map1 = new HashMap<String, String>();
-        map1.put("author", "author1");
-        map1.put("title", "title1");
-        map1.put("time", "time1");
-        map1.put("content", "content1");
-        map1.put("number", "number1");
-
-
-
-        List<Map> list = new ArrayList<Map>();
-        list.add(map1);
-        list.add(map);
-        Gson gson2 = new Gson();
-        String str2 = gson2.toJson(list);
-        System.out.println(str2);
+//
+//        Map<String, String> map = new HashMap<String, String>();
+//        map.put("author", "author");
+//        map.put("title", "title");
+//        map.put("time", "time");
+//        map.put("content", "content");
+//        map.put("number", "number");
+//
+//
+//        Map<String, String> map1 = new HashMap<String, String>();
+//        map1.put("author", "author1");
+//        map1.put("title", "title1");
+//        map1.put("time", "time1");
+//        map1.put("content", "content1");
+//        map1.put("number", "number1");
+//
+//
+//
+//        List<Map> list = new ArrayList<Map>();
+//        list.add(map1);
+//        list.add(map);
+//        Gson gson2 = new Gson();
+//        String str2 = gson2.toJson(list);
+//        System.out.println(str2);
 
 
         Gson jgson = new Gson();
-        List<Hk_JsonType> hks = jgson.fromJson(str2, new TypeToken<List<Hk_JsonType>>(){}.getType());
+        List<Hk_JsonType> hks = jgson.fromJson(getData, new TypeToken<List<Hk_JsonType>>(){}.getType());
         for(int i = 0; i < hks.size() ; i++)
         {
             Hk_JsonType p = hks.get(i);
@@ -79,8 +79,7 @@ class Hk_net {
             System.out.println(c);
             String e=p.getJcontent();
             System.out.println(e);
-            String f=p.getJnumber();
-            System.out.println(f);
+
 
         }
 

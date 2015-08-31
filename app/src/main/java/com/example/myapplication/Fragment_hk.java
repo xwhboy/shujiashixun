@@ -144,12 +144,13 @@ public class Fragment_hk extends Fragment implements SwipeRefreshLayout.OnRefres
 
         new Thread(){
             public void run(){
-                String jjj=net.get_NetMessage();
-               // Log.e("xxx", Thread.currentThread().getName());
+
+
 
                 Log.e("xxx", "网络接收测试");
             }
         }.start();
+
         net.analysis();
         add_Item(data2, 2);
         his.set_his(data2, 2);
