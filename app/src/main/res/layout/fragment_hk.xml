@@ -43,7 +43,7 @@
 
             android:id="@+id/id_swipe_ly"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="wrap_content" >
         <ListView
                android:paddingTop="20dp"
                android:id="@+id/hk_listview"

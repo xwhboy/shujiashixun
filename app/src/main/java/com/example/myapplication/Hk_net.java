@@ -4,6 +4,8 @@ import android.os.Message;
 import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,12 +18,18 @@ import java.util.Map;
 class Hk_net {
 
 
-
+    private String [][]dataGroup;
     private String getData="UNDO";
-    public String  get_NetMessage(){
-          String getdata0;
-          getdata0=Data.refresh("1201330614","2015-08-01 12:23:12");
-          Log.v("efsdfsfs",getdata0);
+
+    public String  get_NetMessage(String stime){
+          String getdata0="";
+          String setid="";
+          System.out.print("_____________________________________________");
+          System.out.print(stime);
+          setid=getid();
+
+          getdata0=Data.refresh(setid, stime);
+
           return getdata0;
     }
 
@@ -29,65 +37,65 @@ class Hk_net {
 
     public boolean send_hk_message(String id, String title, String content){
            boolean if_send=false;
-           if_send=Data.post( id, title, content);
+           if_send=Data.post(id, title, content);
            return if_send;
     }
 
 
-    public void analysis(){
-        getData=get_NetMessage();
-        if(getData=="UNDO"){
-            Log.v("Error","Error");
-        }
+    public int analysis(String stime){
+        getData=get_NetMessage(stime);
 
-//
-//        Map<String, String> map = new HashMap<String, String>();
-//        map.put("author", "author");
-//        map.put("title", "title");
-//        map.put("time", "time");
-//        map.put("content", "content");
-//        map.put("number", "number");
-//
-//
-//        Map<String, String> map1 = new HashMap<String, String>();
-//        map1.put("author", "author1");
-//        map1.put("title", "title1");
-//        map1.put("time", "time1");
-//        map1.put("content", "content1");
-//        map1.put("number", "number1");
-//
-//
-//
-//        List<Map> list = new ArrayList<Map>();
-//        list.add(map1);
-//        list.add(map);
-//        Gson gson2 = new Gson();
-//        String str2 = gson2.toJson(list);
-//        System.out.println(str2);
-
-
-        Gson jgson = new Gson();
-        List<Hk_JsonType> hks = jgson.fromJson(getData, new TypeToken<List<Hk_JsonType>>(){}.getType());
-        for(int i = 0; i < hks.size() ; i++)
+        int k = 0;
+        while((getData == "") && (k < 9))
         {
-            Hk_JsonType p = hks.get(i);
-            String a=p.getJauthor();
-            System.out.println(a);
-            String b=p.getJtitle();
-            System.out.println(b);
-            String c=p.getJtime();
-            System.out.println(c);
-            String e=p.getJcontent();
-            System.out.println(e);
-
-
+            try {
+                k++;
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
+        if(getData==""){
+            return -1;
+        }else{
+            Gson jgson = new Gson();
+            List<Hk_JsonType> hks = jgson.fromJson(getData, new TypeToken<List<Hk_JsonType>>(){}.getType());
+            int datanum=-1;
+            datanum=hks.size();
+            if(datanum==0){
+                Log.v("no","Nothing return !");
+                return datanum;
+            }
+            else{
+                dataGroup=new String[datanum][4];
+                for(int i = 0; i < hks.size() ; i++)
+                {
+                    Hk_JsonType p = hks.get(i);
+                    dataGroup[i][0]=p.getJauthor();
+                    System.out.println(dataGroup[i][0]);
+                    dataGroup[i][1]=p.getJtitle();
+                    System.out.println(dataGroup[i][1]);
+                    dataGroup[i][2]=p.getJtime();
+                    System.out.println(dataGroup[i][2]);
+                    dataGroup[i][3]=p.getJcontent();
+                    System.out.println(dataGroup[i][3]);
 
 
+                }
+            }
 
-//        {"map1":"{\"author\":\"author\",\"title\":\"title\",\"author\":\"author\",\"content\":\"content\",\"number\":\"number\"}","map":"{\"author\":\"author\",\"title\":\"title\",\"author\":\"author\",\"content\":\"content\",\"number\":\"number\"}"}
+            return datanum;
+        }
 
 
     }
+    public String[][] getdataGroup(){
+        return dataGroup;
+    }
 
+    private String getid() {
+        String user_id = "";
+        user_id="1201330614";
+        return user_id;
+    }
 }

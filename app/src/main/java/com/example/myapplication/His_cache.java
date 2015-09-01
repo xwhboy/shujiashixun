@@ -24,7 +24,7 @@ public class His_cache {
     public String get_id_time;
     public int getrow;
     public String  getTime(){
-        SimpleDateFormat    formatter    =   new    SimpleDateFormat    ("yyyy-MM-dd");
+        SimpleDateFormat    formatter    =   new    SimpleDateFormat    ("yyyy-MM-dd ");
         SimpleDateFormat    formatter2    =   new    SimpleDateFormat    ("yyyyMMdd");
 
         nowdate    =    formatter.format(new    java.util.Date());
@@ -53,7 +53,7 @@ public class His_cache {
             FileWriter out = new FileWriter(file, true);
             for(int i=0;i<num;i++)
             {
-                for(int j=0;j<5;j++){
+                for(int j=0;j<4;j++){
                     out.write(data_w[i][j]+"\t");
                 }
                 out.write("\r\n");
@@ -68,11 +68,11 @@ public class His_cache {
 
         int k=0;
         String shuchu[][];
-        String jinggao[][]=new String[1][5];
-        for(int i=0;i<5;i++){
+        String jinggao[][]=new String[1][4];
+        for(int i=0;i<4;i++){
             jinggao[0][i]="ERROR";
         }
-        String temp_data[][]=new String[100][5];
+        String temp_data[][]=new String[100][4];
 
         String filename = getTime()+".txt";
         BufferedReader instream;
@@ -80,7 +80,7 @@ public class His_cache {
         String line; //一行数据
         File file = new File(path, filename);
         //
-        if(!file.exists())
+        if((!file.exists())||(file.length()==0))
             {
                 Log.v("-----测试------",jinggao[0][0]);
                return jinggao;
@@ -94,7 +94,7 @@ public class His_cache {
                     String[] temp = line.split("\t");
                     k = temp.length;
                     if (k > 0) {
-                        for (int j = 0; j < 5; j++) {
+                        for (int j = 0; j < 4; j++) {
                             temp_data[row][j] = temp[j];
                         }
                         row++;
@@ -103,9 +103,9 @@ public class His_cache {
                     }
                 }
                 getrow = row;
-                shuchu = new String[row][5];
+                shuchu = new String[row][4];
                 for (int i = 0; i < row; i++) {
-                    for (int j = 0; j < 5; j++) {
+                    for (int j = 0; j < 4; j++) {
                         shuchu[i][j] = temp_data[i][j];
                     }
                 }

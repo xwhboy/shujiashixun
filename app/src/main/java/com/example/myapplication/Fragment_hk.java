@@ -1,9 +1,8 @@
 package com.example.myapplication;
 
-import com.example.myapplication.His_cache;
-import com.example.myapplication.Hk_net;
 import android.app.Activity;
-import android.content.Context;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,12 +13,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v4.widget.SwipeRefreshLayout;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,8 +44,7 @@ public class Fragment_hk extends Fragment implements SwipeRefreshLayout.OnRefres
     private SwipeRefreshLayout mSwipeLayout;
     //定义数据
 
-     String  data2[][]={{"数学作业","大ssss，大ssss，大ssss，重要的事情说三遍、","张老师","2015.08.12","20150812"},
-            {"语文作业","大ssss大ssss大ssss","李老师","2015.08.12","20150812"}};
+     String dataItem[][];
 
     //作业号
     private int hk_id;
@@ -70,14 +72,20 @@ public class Fragment_hk extends Fragment implements SwipeRefreshLayout.OnRefres
             {
 
                 case REFRESH_COMPLETE:
-//                    add_Item(data2, 2);
-//                    his.set_his(data2, 2);
-//                    String str[][]=his.get_his();
-//                    int zuijia=his.get_his_num();
-//                    Log.v("测试",kk);
 
-                    mSwipeLayout.setRefreshing(false);
-                    break;
+
+                    if(dataItem==null){
+                        Log.v("fuck", "fuck");
+                        getnull();
+                        mSwipeLayout.setRefreshing(false);
+                        break;
+                    }
+                    else {
+                        add_Item(dataItem, hk_num);
+                        mSwipeLayout.setRefreshing(false);
+
+                        break;
+                    }
 
             }
         };
@@ -100,18 +108,19 @@ public class Fragment_hk extends Fragment implements SwipeRefreshLayout.OnRefres
 
         //初始化xml文本，置0
 
+        set_hk_cache("2000-09-01 00:00:00");
 
 
         //test
 
-        final String  data[][]={{"数学作业","陈文发大傻逼，陈文发大傻逼，陈文发大傻逼，重要的事情说三遍、","张老师","2015.08.12","20150812"},
-                {"语文作业","XXXXXXXXXXXXXXX","李老师","2015.08.12","20150812"}};
+
 
         mSwipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.id_swipe_ly);
 
-        mSwipeLayout.setOnRefreshListener(this);
+
         mSwipeLayout.setColorScheme(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
                 android.R.color.holo_orange_light, android.R.color.holo_red_light);
+        mSwipeLayout.setOnRefreshListener(this);
         String str[][]=his.get_his();
         if(str[0][0]=="ERROR"){
 
@@ -139,21 +148,23 @@ public class Fragment_hk extends Fragment implements SwipeRefreshLayout.OnRefres
     public void onRefresh()
     {
         // Log.e("xxx", Thread.currentThread().getName());
+        String getcache=get_hk_cache();
+        hk_num=net.analysis(getcache);
+        if(hk_num<=0){
+            dataItem=null;
+        }
+        else{
+            dataItem=new String[hk_num][4];
+            dataItem=net.getdataGroup();
+            Log.v("dataItem", dataItem[0][0]);
+            Thread t = new Thread(new Runnable(){
+                public void run(){
+                    his.set_his(dataItem, hk_num);
+                }
+            });
+            t.start();
 
-
-
-        new Thread(){
-            public void run(){
-
-
-
-                Log.e("xxx", "网络接收测试");
-            }
-        }.start();
-
-        net.analysis();
-        add_Item(data2, 2);
-        his.set_his(data2, 2);
+        }
         mHandler.sendEmptyMessageDelayed(REFRESH_COMPLETE, 2000);
 
     }
@@ -162,20 +173,28 @@ public class Fragment_hk extends Fragment implements SwipeRefreshLayout.OnRefres
         listems  = new ArrayList<Map<String, Object>>();
         for(int i = 0; i <num; i++) {
             Map<String, Object> listem  = new HashMap<String, Object>();
-            listem.put("title", da[i][0]);
-            listem .put("content", da[i][1]);
-            listem.put("teacher", da[i][2]);
-            listem.put("data", da[i][3]);
-            listems .add(listem);
+            listem.put("title", da[i][1]);
+            listem .put("content", da[i][3]);
+            listem.put("teacher", da[i][0]);
+            String st0=da[i][2].substring(0,11);
+            listem.put("data", st0);
+            listems .add(0,listem);
         }
 
          adapter = new SimpleAdapter(this.getActivity().getApplicationContext(),
                 listems,R.layout.hk_item,
                 new String[]{"title","content","teacher","data"},
                 new int[]{R.id.hk_title,R.id.hk_content,R.id.hk_teacher, R.id.hk_data});
-
         listView.setAdapter(adapter);
-
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                 Adapter adapter=parent.getAdapter();
+//                获取listview中的Adapter对象，包括所有item
+                Map<String,String> map=(Map<String, String>) adapter.getItem(position);
+                newdialog(map.get("teacher")+"老师: "+map.get("title"),"内容 : "+map.get("content"));
+            }
+        });
     }
 
 
@@ -184,101 +203,64 @@ public class Fragment_hk extends Fragment implements SwipeRefreshLayout.OnRefres
         //更新得是同一个listitem，不能new
         for(int i = 0; i <num; i++) {
             Map<String, Object> listem2  = new HashMap<String, Object>();
-            listem2 .put("title", da[i][0]);
-            listem2 .put("content", da[i][1]);
-            listem2.put("teacher", da[i][2]);
-            listem2 .put("data", da[i][3]);
-            listems .add(listem2);
+            listem2 .put("title", da[i][1]);
+            listem2 .put("content", da[i][3]);
+            listem2.put("teacher", da[i][0]);
+            String st0=da[i][2].substring(0,11);
+            listem2.put("data",st0);
+            listems .add(0,listem2);
 
             adapter.notifyDataSetChanged();
     //获得新数据后得修改原来的data，data存储
 
         }
-
-
+        System.out.println(num);
+//        set_hk_cache(da[num-1][2]);
         Toast.makeText(this.getActivity(), "作业已更新", Toast.LENGTH_SHORT).show();
-
+        set_hk_cache(da[num - 1][2]);
 
     }
+    public void  getnull(){
+        Toast.makeText(this.getActivity(), "无最新作业", Toast.LENGTH_SHORT).show();
 
-    //本地预缓存id
+    }
+    private void newdialog(String tn,String cn){
+        final AlertDialog.Builder builder=new AlertDialog.Builder(this.getActivity());  //先得到构造器
+        builder.setTitle(tn); //设置标题
+        builder.setMessage(cn); //设置内容
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() { //设置确定按钮
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.dismiss();
+            }
+        });
+        //参数都设置完成了，创建并显示出来
+        builder.create().show();
+    }
+
+
 
 
     //本地缓存id
-    private void set_hk_cache(int id){
-        String ids=id+"";
+    private void set_hk_cache(String time){
+
         SharedPreferences sharedPreferences=getActivity().getSharedPreferences("id_store", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("hk_id",ids);
+        editor.putString("hk_id",time);
         //将数据保存在文件中
         editor.commit();
     }
+
+
+
     //获取本地缓存id
-    private int get_hk_cache() {
-        int id = 0;
+    public String get_hk_cache() {
+        String time="";
         SharedPreferences sharedPreferences1 = getActivity().getSharedPreferences("id_store", Activity.MODE_PRIVATE);
-        String ids = sharedPreferences1.getString("hk_id", "");
-        id=Integer.parseInt(ids);
-        Toast.makeText(this.getActivity(), "hk_id" + id, Toast.LENGTH_LONG).show();
-        return id;
+        time = sharedPreferences1.getString("hk_id", "");
+        Log.v("本地缓存",time);
+        return time;
     }
-    private void set_hk_his(String hisdata[][]){
-        String name=hisdata[0][3];
-        SharedPreferences sharedPreferences=getActivity().getSharedPreferences("id_store", Activity.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("hk_his",name);
-        //将数据保存在文件中
-        editor.commit();
-    }
-    public void ini_data(){
-
-        hk_id=get_hk_cache();
-        send_id(hk_id);
-        hk_num=get_data(0);
-
-    }
-
-
-    public void send_id(int id){
-
-    }
-
-    public int  get_data(int ch){
-
-        int num=999;
-        num=analysis_data_num();
-        if(num==0)
-        {
-            if(ch==0)
-            {
-                //初始化时没有今日的作业
-                Toast.makeText(this.getActivity(), "今日无作业", Toast.LENGTH_LONG).show();
-            }
-            else {
-                //刷新时不增加
-            }
-        }
-        else
-        {
-            //String[][0]是title String[][1]是content String[][2]是teacher String[][3]是日期 String [][4]是hk_id
-            hk_data=new String[num][5];
-            analysis_data();
-        }
-        return num;
-    }
-
-    //数据解析
-    public int analysis_data_num(){
-        int num=0;
-
-
-
-        return num;
-    }
-    //字符解析
-    public void analysis_data(){
-
-    }
-
 
 }
