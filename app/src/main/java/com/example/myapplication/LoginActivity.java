@@ -1,5 +1,7 @@
 package com.example.myapplication;
 
+//import Entity.Service.*;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -9,6 +11,7 @@ import android.content.ContentResolver;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -17,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,12 +29,18 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-
+//import Entity.*;
 /**
  * A login screen that offers login via email/password.
  */
@@ -40,9 +50,9 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
      */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
+//    private static final String[] DUMMY_CREDENTIALS = new String[]{
+//            "foo@example.com:hello", "bar@example.com:world"
+//    };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -54,12 +64,20 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     private View mProgressView;
     private View mLoginFormView;
 
+    private int personType;
+    private String userType;
+    private boolean newUserFlag;
+
+    public  Person person;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         // Set up the login form.
+
+        person._newUserFlag = getNewUserFlag();
+
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
 
@@ -83,8 +101,27 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             }
         });
 
+        Button modifyPasswordButton = (Button) findViewById(R.id.modifyPasswordButton);
+        modifyPasswordButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, modifyPasswordActivity.class);
+                startActivity(intent);
+
+            }
+        });
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        RadioGroup radioGroup = (RadioGroup)findViewById(R.id.radioGroup);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                 personType = radioGroup.getCheckedRadioButtonId();
+            }
+        });
+        RadioButton studentButton = (RadioButton)findViewById(R.id.studentButton);
+        studentButton.setChecked(true);
     }
 
     private void populateAutoComplete() {
@@ -97,6 +134,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
+
+
     public void attemptLogin() {
         if (mAuthTask != null) {
             return;
@@ -107,13 +146,36 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
+       String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
-
+//          String email = "201330614";
+//            String password = "541541";
+        String userType;
         boolean cancel = false;
         View focusView = null;
 
 
+
+        switch(this.personType)
+        {
+            case R.id.studentButton:
+                userType = new String("Student");
+                email = "1" + email;
+                break;
+            case R.id.teacherButton:
+                userType = new String("Teacher");
+                email = "2" + email;
+                break;
+            case R.id.patriarchButton:
+                userType = new String("Patriarch");
+                email = new String("3") + email;
+                break;
+            default:
+                userType = "Undefined";
+                break;
+        }
+
+        String[] accountAndPassword = {email,password};
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
@@ -140,14 +202,15 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
+            mAuthTask = new UserLoginTask(userType,email, password);
             mAuthTask.execute((Void) null);
+
         }
     }
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
-        return email.contains("@");
+        return true;
     }
 
     private boolean isPasswordValid(String password) {
@@ -253,38 +316,38 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
         private final String mEmail;
         private final String mPassword;
+        private final String mUserType;
 
-        UserLoginTask(String email, String password) {
+        public Person person;
+        UserLoginTask(String userType,String email, String password) {
             mEmail = email;
             mPassword = password;
+            mUserType = userType;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
 
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    boolean flag1= pieces[1].equals(mPassword);
-                    if(flag1) {
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(intent);
-                    }
-                    return flag1;
+                // Simulate network access.
+                     //    Thread.sleep(2000);
+                String returnString = new String(Data.login(mUserType,mEmail,mPassword));
+                Log.i("return string is ",returnString);
+            Log.i("Grade is ",Data.grade("1201330614","1","2013"));
+                    Map<String,String> map = DataParser.getContentIntoMap(returnString);
+                        Log.i("The result is ",map.get("result"));
+                    if(map.get("result").equals("true")){
+
+                        person._name = map.get("name");
+                        person._gender = map.get("gender");
+                        person._class = map.get("class");
+                        person._grade = map.get("grade");
+                        return true;
                 }
-            }
 
             // TODO: register the new account here.
-            return true;
+            return false;
         }
 
         @Override
@@ -293,6 +356,11 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             showProgress(false);
 
             if (success) {
+                this.person = new Person();
+                person._ID = mEmail;
+                person._userType = userType;
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
@@ -306,7 +374,19 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             showProgress(false);
         }
     }
+
+    public boolean getNewUserFlag()
+    {
+        SharedPreferences spf = this.getSharedPreferences("share",0);
+        boolean isFirstRun = spf.getBoolean("isFirstRun",true);
+        SharedPreferences.Editor editor = spf.edit();
+        if(isFirstRun)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }
-
-
-
