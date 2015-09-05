@@ -48,7 +48,7 @@ public class HttpUtil {
             }
         }).start();
 
-        //阻塞线程 等待传值
+        //阻塞线程 等待传�?
         int i = 0;
         while((response == "") && (i < 9))
         {
@@ -59,6 +59,8 @@ public class HttpUtil {
                 e.printStackTrace();
             }
         }
+
+
 
         return response;
     }

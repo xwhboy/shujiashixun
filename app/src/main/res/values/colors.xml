@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<color name="white">#FFFFFF</color>
-	<color name="white2">#dddddd</color>	
+	<color name="white2">#dddddd</color>
 	<color name="white3">#EEEEFF</color>
 	<color name="orange">#fda520</color>
 	<color name="orange2">#f39800</color>
@@ -13,7 +13,7 @@
 	<color name="yellow">#ffff00</color>
 	<color name="darkgray">#4B4B4B</color>
 	<color name="gray">#808080</color>
-	<color name="lightgray">#c0c0c0</color>	
+	<color name="lightgray">#c0c0c0</color>
 	<color name="gray_blue">#DDDDFF</color>
 	<color name="chat_emotion_unit_press">#ffd5d5d5</color>
 	<color name="p_text1">#ff727272</color>
@@ -32,6 +32,6 @@
 	<color name="chat_list_header_text">#ff666666</color>
 	<color name="title_bg">#ff54acea</color>
 	<item type="color" name="chat_title_bg">@color/title_bg</item>
-	   <color name="chat_history_time_text">#ff999999</color>
-	       <color name="chat_history_msg_text">#ff545454</color>
+	<color name="chat_history_time_text">#ff999999</color>
+	<color name="chat_history_msg_text">#ff545454</color>
 </resources>

@@ -37,6 +37,11 @@
             android:windowSoftInputMode="adjustResize|stateVisible" >
 
         </activity>
+        <activity
+            android:name=".Detail"
+            android:windowSoftInputMode="stateUnchanged" >
+        </activity>
+
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
 </manifest>
