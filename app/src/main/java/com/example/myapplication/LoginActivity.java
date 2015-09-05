@@ -174,6 +174,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 userType = "Undefined";
                 break;
         }
+        person._userType = userType;
 
         String[] accountAndPassword = {email,password};
         // Check for a valid password, if the user entered one.
@@ -334,11 +335,10 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                      //    Thread.sleep(2000);
                 String returnString = new String(Data.login(mUserType,mEmail,mPassword));
                 Log.i("return string is ",returnString);
-            Log.i("Grade is ",Data.grade("1201330614","1","2013"));
                     Map<String,String> map = DataParser.getContentIntoMap(returnString);
                         Log.i("The result is ",map.get("result"));
                     if(map.get("result").equals("true")){
-
+                        person._userType = mUserType;
                         person._name = map.get("name");
                         person._gender = map.get("gender");
                         person._class = map.get("class");
@@ -358,7 +358,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             if (success) {
                 this.person = new Person();
                 person._ID = mEmail;
-                person._userType = userType;
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();

@@ -54,6 +54,7 @@ public class Fragment_three extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i("UserType",person.getUserType());
                 if(person._userType.equals("Teacher"))
                     getTeacherGrade();
                 else
@@ -70,13 +71,14 @@ public class Fragment_three extends Fragment {
     public void getTeacherGrade()
     {
         Log.i("Teacher Grade getted",person._userType);
+        Log.i("The id is ",person.getID());
         String gradeString = Data.grade(person.getID(), examTypeSelected, yearSelected);
         Log.i("The grade String is ", gradeString);
         List<StudentGrade> gradeList = DataParser.getContentIntoStudentGradeList(gradeString);
-        ArrayList<String> nameList = new ArrayList<String>();
-        ArrayList<String> gradeArrayList = new ArrayList<String>();
-        ArrayList<String> IDList = new ArrayList<String>();
-        ArrayList<String> courseNameList = new ArrayList<String>();
+//        ArrayList<String> nameList = new ArrayList<String>();
+//        ArrayList<String> gradeArrayList = new ArrayList<String>();
+//        ArrayList<String> IDList = new ArrayList<String>();
+//        ArrayList<String> courseNameList = new ArrayList<String>();
 
         this.name.clear();
         for (int i = 0; i < gradeList.size(); i++) {
