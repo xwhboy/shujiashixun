@@ -84,6 +84,7 @@ public class Fragment_hk extends Fragment implements SwipeRefreshLayout.OnRefres
                     }
                     else {
                         add_Item(dataItem, hk_num);
+                        his.set_his(dataItem, hk_num);
                         mSwipeLayout.setRefreshing(false);
 
                         break;
@@ -227,7 +228,7 @@ public class Fragment_hk extends Fragment implements SwipeRefreshLayout.OnRefres
     //获得新数据后得修改原来的data，data存储
 
         }
-        System.out.println(num);
+        System.out.println(da[num - 1][2]);
 //        set_hk_cache(da[num-1][2]);
         Toast.makeText(this.getActivity(), "作业已更新", Toast.LENGTH_SHORT).show();
         set_hk_cache(da[num - 1][2]);
