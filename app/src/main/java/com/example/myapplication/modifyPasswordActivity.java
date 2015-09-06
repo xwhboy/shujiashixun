@@ -27,9 +27,9 @@ public class modifyPasswordActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modify_password);
         Button button2 = (Button)findViewById(R.id.button2);
-        EditText IDEditText = (EditText)findViewById(R.id.IDEditText);
-        EditText oldPasswordEditText = (EditText)findViewById(R.id.oldPasswordEditText);
-        EditText newPasswordEditText = (EditText)findViewById(R.id.newPasswordEditText);
+         IDEditText = (EditText)findViewById(R.id.IDEditText);
+         oldPasswordEditText = (EditText)findViewById(R.id.oldPasswordEditText);
+         newPasswordEditText = (EditText)findViewById(R.id.newPasswordEditText);
 
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,9 +50,11 @@ public class modifyPasswordActivity extends Activity {
 
     }
 
-    public void modifyPassword()
+    private void modifyPassword()
     {
         ID = IDEditText.getText().toString();
+        Log.i("ID:",ID);
+
         switch(userType)
         {
             case R.id.studentButton:
@@ -65,7 +67,6 @@ public class modifyPasswordActivity extends Activity {
                 ID = "3" + ID;
                 break;
         }
-        Log.i("ID:",ID);
         Log.i("Old Password:",oldPasswordEditText.getText().toString());
         Log.i("New Password:",newPasswordEditText.getText().toString());
       boolean flag =  Data.change(ID,oldPasswordEditText.getText().toString(),newPasswordEditText.getText().toString());

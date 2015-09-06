@@ -148,8 +148,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         // Store values at the time of the login attempt.
        String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
-//          String email = "201330614";
-//            String password = "541541";
         String userType;
         boolean cancel = false;
         View focusView = null;
@@ -319,7 +317,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         private final String mPassword;
         private final String mUserType;
 
-        public Person person;
         UserLoginTask(String userType,String email, String password) {
             mEmail = email;
             mPassword = password;
@@ -338,11 +335,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                     Map<String,String> map = DataParser.getContentIntoMap(returnString);
                         Log.i("The result is ",map.get("result"));
                     if(map.get("result").equals("true")){
-                        person._userType = mUserType;
-                        person._name = map.get("name");
-                        person._gender = map.get("gender");
-                        person._class = map.get("class");
-                        person._grade = map.get("grade");
+
                         return true;
                 }
 
@@ -356,8 +349,24 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             showProgress(false);
 
             if (success) {
-                this.person = new Person();
+               Person person = new Person();
+                String returnString = new String(Data.login(mUserType,mEmail,mPassword));
+                Log.i("return string is ",returnString);
+                Map<String,String> map = DataParser.getContentIntoMap(returnString);
                 person._ID = mEmail;
+                person._userType = mUserType;
+                Log.i("The new user flag is ",String.valueOf(person._newUserFlag));
+
+                if(mUserType.equals("Student")) {
+                    person._name = map.get("name");
+                    person._gender = map.get("gender");
+                    person._class = map.get("class");
+                    person._grade = map.get("grade");
+                }
+                else if (mUserType.equals("Teacher"))
+                    person._name = map.get("name");
+                person._gender = map.get("gender");
+                person._assumptionDate = map.get("assumptionDate");
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();

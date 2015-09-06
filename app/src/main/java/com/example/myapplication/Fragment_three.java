@@ -71,8 +71,7 @@ public class Fragment_three extends Fragment {
     public void getTeacherGrade()
     {
         Log.i("Teacher Grade getted",person._userType);
-        Log.i("The id is ",person.getID());
-        String gradeString = Data.grade(person.getID(), examTypeSelected, yearSelected);
+        String gradeString = Data.grade(person._ID, examTypeSelected, yearSelected);
         Log.i("The grade String is ", gradeString);
         List<StudentGrade> gradeList = DataParser.getContentIntoStudentGradeList(gradeString);
 //        ArrayList<String> nameList = new ArrayList<String>();
@@ -91,6 +90,7 @@ public class Fragment_three extends Fragment {
         Person aperson = new Person();
         String gradeString = Data.grade(aperson.getID(), examTypeSelected, yearSelected);
         Log.i("The grade String is ", gradeString);
+
         List<gradeClass> gradeList = DataParser.getContentIntoGradeList(gradeString);
         ArrayList<String> nameList = new ArrayList<String>();
         ArrayList<String> gradeArrayList = new ArrayList<String>();
