@@ -122,6 +122,11 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         });
         RadioButton studentButton = (RadioButton)findViewById(R.id.studentButton);
         studentButton.setChecked(true);
+
+        SharedPreferences spf = this.getSharedPreferences("share",0);
+        SharedPreferences.Editor editor = spf.edit();
+        editor.putBoolean("isFirstIn", false);
+        editor.commit();
     }
 
     private void populateAutoComplete() {
