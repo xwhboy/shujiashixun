@@ -93,6 +93,11 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             }
         });
 
+
+        if(Person._newUserFlag == false)
+            mEmailView.setText(getAccount());
+
+
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -156,7 +161,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         String userType;
         boolean cancel = false;
         View focusView = null;
-
+        writeAccountIntoCache(email);
 
 
         switch(this.personType)
@@ -208,7 +213,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             showProgress(true);
             mAuthTask = new UserLoginTask(userType,email, password);
             mAuthTask.execute((Void) null);
-
         }
     }
 
@@ -402,4 +406,19 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             return false;
         }
     }
+
+    public String getAccount()
+    {
+        SharedPreferences spf = this.getSharedPreferences("account",0);
+        String account = spf.getString("account","请先输入账号");
+        return account;
+    }
+    public void writeAccountIntoCache(String string)
+    {
+        SharedPreferences spf = this.getSharedPreferences("account",0);
+        SharedPreferences.Editor editor = spf.edit();
+        editor.putString("account", string);
+        editor.commit();
+    }
+
 }
