@@ -84,7 +84,7 @@ public class Fragment_hk extends Fragment implements SwipeRefreshLayout.OnRefres
                     }
                     else {
                         add_Item(dataItem, hk_num);
-                        his.set_his(dataItem, hk_num);
+//                        his.set_his(dataItem, hk_num);
                         mSwipeLayout.setRefreshing(false);
 
                         break;
