@@ -42,8 +42,10 @@ public class Fragment_hk extends Fragment implements SwipeRefreshLayout.OnRefres
     private SimpleAdapter adapter;
     private static final int REFRESH_COMPLETE = 0X110;
     private SwipeRefreshLayout mSwipeLayout;
-    //定义数据
-
+    //定义数据p
+    private String usertype;
+    private boolean ifthefirst=false;
+    private String userid;
      String dataItem[][];
 
     //作业号
@@ -107,10 +109,17 @@ public class Fragment_hk extends Fragment implements SwipeRefreshLayout.OnRefres
 
 
         //初始化xml文本，置0
+        ifthefirst=Person._newUserFlag;
+        if (ifthefirst) {
+            set_hk_cache("2000-09-01 00:00:00");
+        }
 
-        set_hk_cache("2000-09-01 00:00:00");
 
+        usertype=Person._userType;
+        userid=Person._ID;
 
+        System.out.println("--------------------------------------------");
+        System.out.println(usertype + "            " + userid + "            " + ifthefirst);
         //test
 
 
@@ -136,10 +145,17 @@ public class Fragment_hk extends Fragment implements SwipeRefreshLayout.OnRefres
             @Override
             public void onClick(View v) {
                 //if判断用户
-                Intent intent=new Intent(getActivity(),Fragment_hk_add.class);
-                getActivity().startActivity(intent);
+                if(usertype.equals("Teacher")) {
+                    Intent intent = new Intent(getActivity(), Fragment_hk_add.class);
+                    getActivity().startActivity(intent);
+                }
+                else{
+                    Toast.makeText(Fragment_hk.this.getActivity(), "没有访问权限", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+
+
 
 
 		return rootView;
@@ -157,12 +173,9 @@ public class Fragment_hk extends Fragment implements SwipeRefreshLayout.OnRefres
             dataItem=new String[hk_num][4];
             dataItem=net.getdataGroup();
             Log.v("dataItem", dataItem[0][0]);
-            Thread t = new Thread(new Runnable(){
-                public void run(){
-                    his.set_his(dataItem, hk_num);
-                }
-            });
-            t.start();
+            his.set_his(dataItem, hk_num);
+
+
 
         }
         mHandler.sendEmptyMessageDelayed(REFRESH_COMPLETE, 2000);

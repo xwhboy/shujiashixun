@@ -95,7 +95,7 @@ class Hk_net {
 
     private String getid() {
         String user_id = "";
-        user_id="1201330614";
+        user_id=Person._ID;
         return user_id;
     }
 }

@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -78,6 +79,8 @@ public class Fragment_three extends Fragment {
 //        ArrayList<String> gradeArrayList = new ArrayList<String>();
 //        ArrayList<String> IDList = new ArrayList<String>();
 //        ArrayList<String> courseNameList = new ArrayList<String>();
+
+            Toast.makeText(this.getActivity(),"成绩已更新",Toast.LENGTH_SHORT);
 
         this.name.clear();
         for (int i = 0; i < gradeList.size(); i++) {

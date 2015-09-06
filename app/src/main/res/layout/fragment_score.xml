@@ -1,52 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
+
     >
-    <AbsoluteLayout
+    <RelativeLayout
+        android:padding="10dp"
+        android:id="@+id/rl1"
+        android:gravity="center_vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center">
-
-
+        android:layout_height="wrap_content"
+        android:background="@color/blue">
         <Spinner
-            android:id =   "@+id/yearSpinner"
-            android:layout_width="wrap_content"
+            android:id ="@+id/yearSpinner"
+            android:layout_width="100dp"
             android:layout_height="60dp"
             android:prompt = "@string/spin_prompt"
-            android:layout_gravity="center_vertical">
+            android:layout_marginLeft="20dp"
+            >
 
         </Spinner>
         <Spinner
-            android:id =   "@+id/tuitorSpinner"
-            android:layout_width="wrap_content"
+            android:id ="@+id/tuitorSpinner"
+            android:layout_width="100dp"
             android:layout_height="60dp"
             android:entries = "@array/tuitor"
             android:prompt = "@string/tuitorPrompt"
-            android:layout_x="-4dp"
-            android:layout_y="70dp">
+
+            android:layout_toRightOf="@+id/yearSpinner"
+            android:layout_toEndOf="@+id/yearSpinner">
 
         </Spinner>
-
-        <ListView
-            android:layout_width="wrap_content"
-            android:layout_height="245dp"
-            android:id="@+id/listView"
-            android:layout_gravity="bottom"
-            android:layout_x="-10dp"
-            android:layout_y="246dp" />
-
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="查询"
+            android:layout_marginTop="5dp"
             android:id="@+id/button"
-            android:layout_x="105dp"
-            android:layout_y="134dp" />
-    </AbsoluteLayout>
+            android:layout_marginRight="20dp"
+            android:layout_alignParentRight="true"
+            />
 
 
 
 
-</AbsoluteLayout>
+    </RelativeLayout>
+
+        <ListView
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="245dp"
+            android:id="@+id/listView"
+            android:layout_gravity="bottom"
+            android:layout_below="@+id/rl1"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="2dp" />
+
+
+
+
+</RelativeLayout>

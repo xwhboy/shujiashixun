@@ -391,7 +391,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     public boolean getNewUserFlag()
     {
         SharedPreferences spf = this.getSharedPreferences("share",0);
-        boolean isFirstRun = spf.getBoolean("isFirstRun",true);
+        boolean isFirstRun = spf.getBoolean("isFirstIn",true);
         SharedPreferences.Editor editor = spf.edit();
         if(isFirstRun)
         {
