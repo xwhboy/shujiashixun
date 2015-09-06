@@ -715,6 +715,7 @@ public class Fragment_two extends Fragment {
 	{
 		Gson gson = new Gson();
 		Week week = new Week();
+		Log.v(" -----------------",Person._ID+Person._grade+Person._class);
 		String json = Data.course(Person._ID,Person._grade,Person._class);
 		week = gson.fromJson(json, Week.class);
 		db.updateTitle(2, 2, week.Mon.first.getName(),
